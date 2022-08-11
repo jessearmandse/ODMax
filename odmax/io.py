@@ -1,6 +1,7 @@
 # I/O functionality for ODMax
 import os
 import cv2
+import ffmpegcv
 from odmax import helpers
 from datetime import datetime
 import gpxpy
@@ -28,7 +29,7 @@ def to_pil(array):
     :param array: ND-array with colors (3rd dimension) in RGB order
     :return: PIL image
     """
-    return Image.fromarray(cv2.cvtColor(array, cv2.COLOR_BGR2RGB))
+    return Image.fromarray(array)
 
 
 def open_file(fn):
@@ -42,9 +43,7 @@ def open_file(fn):
     assert(os.path.isfile(fn)), f"File {fn} was not found"
     if isinstance(fn, str):
         # try to open file with openCV
-        f = cv2.VideoCapture(fn)
-        if not(f.isOpened()):
-            raise(f"Could not recognise file {fn} as a proper video file")
+        f = ffmpegcv.VideoCapture(fn, pix_fmt='rgb24')
         return f
     else:
         raise TypeError(f"{fn} should be a string pointing to a path")
@@ -57,8 +56,8 @@ def get_frame_number(f, time):
     :param time: seconds from start of video
     :return:
     """
-    fps = f.get(cv2.CAP_PROP_FPS)
-    frame_count = f.get(cv2.CAP_PROP_FRAME_COUNT)
+    fps = f.fps
+    frame_count = len(f)
     return int(min(frame_count, time * fps))
 
 def read_frame(f, n):
@@ -69,13 +68,13 @@ def read_frame(f, n):
     :param n: frame number
     :return: img, blob containing frame
     """
-    assert isinstance(f, cv2.VideoCapture)
     assert isinstance(n, int), f"{n} is not an integer"
     # check if frame is beyond length of movie
-    if n > f.get(cv2.CAP_PROP_FRAME_COUNT):
-        raise ValueError(f"The requested frame number {n} is larger than the available frames {cv2.CAP_PROP_FRAME_COUNT}")
+    nframes = len(f)
+    if n > len(f):
+        raise ValueError(f"The requested frame number {n} is larger than the available frames {nframes}")
     # wind to the right frame number
-    f.set(cv2.CAP_PROP_POS_FRAMES, n)
+
     # extract this frame
     success, img = f.read()
     if success:

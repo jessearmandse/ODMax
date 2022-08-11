@@ -26,6 +26,7 @@ setup(
         "pip",
         "numpy",
         "opencv-python-headless",
+        "ffmpegcv",
         "gpxpy",
         "tqdm",
         "piexif",
@@ -57,5 +58,5 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
     ],
-    keywords="GoPro, OpenDroneMap",
+    keywords="GoPro, OpenDroneMap, Ricoh, Theta",
 )

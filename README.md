@@ -94,6 +94,12 @@ This will provide an overview of the most up-to-date command line options.
 Alternatively, use our jupyter notebook examples to see common use cases on command-line as
 well as directly in the API.
 
+Ricoh Theta X support
+---------------------
+
+Substituted opencv video capture frames reader with [ffmpegcv](https://github.com/chenxinfeng4/ffmpegcv) to be able to read encoded MP4 videos from Ricoh Theta X.
+In general everything else should remain the same, as `ffmpegcv` is near to 100% API compatible with opencv.
+
 Acknowledgement
 ---------------
 The development of ODMax has been supported by the Australian National University - Research School of Biology through 
