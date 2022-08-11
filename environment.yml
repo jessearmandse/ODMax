@@ -9,5 +9,7 @@ dependencies:
   - matplotlib=3.5.0
   - cartopy=0.18.0
   - jupyter=1.0.0
+  - ffmpeg=5.1.0
   - pip:
+    - ffmpegcv==0.2.3
     - odmax==0.1.1
